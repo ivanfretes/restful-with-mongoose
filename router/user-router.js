@@ -31,31 +31,27 @@ router.get('/', function (req, res) {
 
 // RETURNS USERS BY ID IN THE DATABASE
 router.get('/:id', function(req, res) {
-    UserModel.findById(req.params.taskId, function(err, task) {
+    UserModel.findById(req.params.id, function(err, user) {
         if (err) res.send(err);
-            res.json(task);
+        res.json(user);
     });
 });
 
 
-// Modify user by ID in the database
-/*route.put('/:id',function(req, res) {
-  Task.findOneAndUpdate({_id: req.params.taskId}, req.body, {new: true}, function(err, task) {
-    if (err)
-      res.send(err);
-    res.json(task);
-  });
+// UPDATES A SINGLE USER IN THE DATABASE
+router.put('/:id', function (req, res) {
+    UserModel.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, user) {
+        if (err) return res.status(500).send("There was a problem updating the user.");
+        res.status(200).send(user);
+    });
 });
   
-// 
-route.delete('/:id', function(req, res) {
-    Task.remove({
-      _id: req.params.taskId
-    }, function(err, task) {
-      if (err)
-        res.send(err);
-      res.json({ message: 'Task successfully deleted' });
+// DELETES A USER FROM THE DATABASE
+router.delete('/:id', function (req, res) {
+    UserModel.findByIdAndRemove(req.params.id, function (err, user) {
+        if (err) return res.status(500).send("There was a problem deleting the user.");
+        res.status(200).send("User "+ user.name +" was deleted.");
     });
-});*/
+});
 
 module.exports = router;
